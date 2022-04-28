@@ -104,19 +104,20 @@ namespace EconetProject.Controllers
 
             return shopArea;
         }
-                
-        [HttpGet]
-        public ShopAreaModel RetriveShops(int id = 0, string area = null)
+
+        [Route("api/RetriveShops")]
+        [HttpPost]
+        public ShopAreaModel RetriveShops(ShopAreaModel shopArea)
         {
-            ShopAreaModel shopArea = new ShopAreaModel();
+            //ShopAreaModel shopArea = new ShopAreaModel();
 
             try
             {
-                if (id != 0 || !string.IsNullOrEmpty(area))
+                if (shopArea.AreaId != 0 || !string.IsNullOrEmpty(shopArea.AreaName))
                 {
-                    if (id > 0)
+                    if (shopArea.AreaId > 0)
                     {
-                        var shops = db.Shops.Where(x => x.AreaId == id).ToList();
+                        var shops = db.Shops.Where(x => x.AreaId == shopArea.AreaId).ToList();
 
                         if (shops != null)
                         {
@@ -136,9 +137,9 @@ namespace EconetProject.Controllers
                         shopArea.Message = "Could not find Shop Name";
                     }
 
-                    if (!string.IsNullOrEmpty(area))
+                    if (!string.IsNullOrEmpty(shopArea.AreaName))
                     {
-                        var areaSearched = db.Areas.Where(x => x.AreaName == area).FirstOrDefault();
+                        var areaSearched = db.Areas.Where(x => x.AreaName == shopArea.AreaName).FirstOrDefault();
 
                         if (areaSearched != null)
                         {
